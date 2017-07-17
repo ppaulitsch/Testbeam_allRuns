@@ -18,7 +18,6 @@
       <parameter name="SkipNEvents" value="@SkipNEvents@"/>
       <parameter name="SupressCheck" value="false"/>
       <parameter name="Verbosity" value="@Verbosity@"/>
-      <parameter name="Verbosity" value="@Verbosity@"/>
    </global>
 
    <processor name="AIDA" type="AIDAProcessor">
@@ -42,7 +41,7 @@
      <!--Type of sparsified pixel data structure (use SparsePixelType enumerator)-->
      <!--parameter name="EUDRBSparsePixelType" type="int">1 </parameter-->
      <!--This si the mimotel output collection when read in ZS mode-->
-     <parameter name="EUDRBZSModeOutputCollection" type="string" lcioOutType="TrackerData">zsdata </parameter>
+     <parameter name="EUDRBZSModeOutputCollection" type="string" lcioOutType="TrackerData">zsdata_m26 </parameter>
      <!--The geometry identification number-->
      <parameter name="GeoID" type="int">0 </parameter>
      <!--This is the input file name-->
@@ -54,7 +53,7 @@
    <processor name="HotPixelMaskerM26" type="EUTelProcessorNoisyPixelFinder">
      <!--EUTelProcessorNoisyPixelFinder computes the firing frequency of pixels and applies a cut on this value to mask (NOT remove) noisy pixels.-->
      <!--The list of sensor IDs that shall be excluded.-->
-     <parameter name="ExcludedPlanes" type="IntVec"> </parameter>
+     <parameter name="ExcludedPlanes" type="IntVec"> 8 </parameter>
      <!--This is the name of the hot pixel collection to be saved into the output slcio file-->
      <parameter name="HotPixelCollectionName" type="string"> hotpixel_m26 </parameter>
      <!--This is the name of the LCIO file name with the output noisyPixel db (add .slcio)-->
@@ -97,7 +96,7 @@
    <processor name="EUTelUtilityPrintEventNumber" type="EUTelUtilityPrintEventNumber">
      <!--EUTelUtilityPrintEventNumber prints event number to screen depending on the verbosity level-->
      <!--Print event number for every n-th event-->
-     <parameter name="EveryNEvents" type="int">10000 </parameter>
+     <parameter name="EveryNEvents" type="int">20000 </parameter>
      <!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
      <!--parameter name="Verbosity" type="string">DEBUG </parameter-->
      <!--print the event timestamp as read from LCIO-->
