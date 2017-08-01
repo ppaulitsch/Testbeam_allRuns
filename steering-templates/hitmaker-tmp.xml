@@ -19,19 +19,19 @@
       <processor name="AIDA"/>
       <processor name="LoadRefHitDB"/>
       <processor name="HitMakerM26"/>
-      <processor name="PreAligner"/>
       <processor name="Correlator"/>
+      <processor name="PreAligner"/>
       <processor name="Save"/>
       <processor name="MyEUTelUtilityPrintEventNumber"/>
    </execute>
 
    <global>
       <parameter name="LCIOInputFiles"> @LcioPath@/@FilePrefix@-clustering.slcio </parameter>
-      <parameter name="GearXMLFile" value="@GearFilePath@/@GearFile@"/>
-      <parameter name="MaxRecordNumber" value="@MaxRecordNumber@"/>
-      <parameter name="SkipNEvents" value="@SkipNEvents@"/>
-      <parameter name="SupressCheck" value="false"/>
-      <parameter name="Verbosity" value="@Verbosity@"/>
+      <parameter name="GearXMLFile">@GearFilePath@/@GearFile@.bak</parameter>
+      <parameter name="MaxRecordNumber">@MaxRecordNumber@</parameter>
+      <parameter name="SkipNEvents">@SkipNEvents@</parameter>
+      <parameter name="SupressCheck">false</parameter>
+      <parameter name="Verbosity">@Verbosity@</parameter>
    </global>
 
  <processor name="AIDA" type="AIDAProcessor">
@@ -70,18 +70,18 @@
 	<parameter name="HitCollectionName" type="string" lcioOutType="TrackerHit"> hit </parameter>
 		<!--Cluster (pulse) collection name-->
 	<parameter name="PulseCollectionName" type="string" lcioInType="TrackerPulse"> cluster_m26_free </parameter>
-		<!--This is the name of the reference hit collection initialized in this processor. This collection provides the reference vector to correctly determine a plane corresponding to a global hit coordiante.-->
+	<!--This is the name of the reference hit collection initialized in this processor. This collection provides the reference vector to correctly determine a plane corresponding to a global hit coordiante.-->
 	<!--parameter name="ReferenceCollection" type="string">referenceHit </parameter-->
 	<!--This is the file where the reference hit collection is stored-->
 	<parameter name="ReferenceHitFile" type="string"> @DatabasePath@/@FilePrefix@-referencehit.slcio </parameter>
-		<!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
+	<!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
 	<!--parameter name="Verbosity" type="string">DEBUG </parameter-->
 </processor>
 
 <processor name="PreAligner" type="EUTelPreAlign">
  <!--Apply alignment constants to hit collection-->
   <!--The name of the input hit collection-->
-  <parameter name="FixedPlane" type="int">1 </parameter>
+  <parameter name="FixedPlane" type="int"> 1 </parameter>
   <parameter name="ExcludedPlanes" type="IntVec"> 8 </parameter>
   <parameter name="ExcludedPlanesXCoord" type="IntVec"> 8 </parameter>
   <!--The list of sensor IDs for which the Y coordinate  shall be excluded.-->
@@ -102,17 +102,13 @@
   <!--reference hit collection name -->
   <parameter name="ReferenceCollection" type="string" value="refhit"/>
   <!--Maximal values of the hit residuals in the X direction for a correlation band. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-->
-  <!-- <parameter name="ResidualsXMax" type="FloatVec"> @PreAlignResidualsXMax@ </parameter> -->
-  <parameter name="ResidualsXMax" type="FloatVec"> 10 10 10 10 10 10 </parameter>
+  <parameter name="ResidualsXMax" type="FloatVec"> @PreAlignResidualsXMax@ </parameter>
   <!--Minimal values of the hit residuals in the X direction for a correlation band. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-->
-  <!-- <parameter name="ResidualsXMin" type="FloatVec"> @PreAlignResidualsXMin@ </parameter> -->
-  <parameter name="ResidualsXMin" type="FloatVec"> -10 -10 -10 -10 -10 -10 </parameter>
+  <parameter name="ResidualsXMin" type="FloatVec"> @PreAlignResidualsXMin@ </parameter>
   <!--Maximal values of the hit residuals in the Y direction for a correlation band. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-->
-  <!-- <parameter name="ResidualsYMax" type="FloatVec"> @PreAlignResidualsYMax@ </parameter> -->
-  <parameter name="ResidualsYMax" type="FloatVec"> 10 10 10 10 10 10 </parameter>
+  <parameter name="ResidualsYMax" type="FloatVec"> @PreAlignResidualsYMax@ </parameter>
   <!--Minimal values of the hit residuals in the Y direction for a correlation band. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-->
-  <!-- <parameter name="ResidualsYMin" type="FloatVec"> @PreAlignResidualsYMin@ </parameter> -->
-  <parameter name="ResidualsYMin" type="FloatVec"> -10 -10 -10 -10 -10 -10  </parameter>
+  <parameter name="ResidualsYMin" type="FloatVec"> @PreAlignResidualsYMin@ </parameter>
   <!--Do you want the reference hit collection to be used for coordinate transformations?-->
   <!--parameter name="UseReferenceCollection" type="bool" value="true"/-->
   <!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
@@ -128,33 +124,46 @@
   <!--Minimum allowed cluster charge to be taken into account for the correlation plots (default = 2)-->
   <parameter name="ClusterChargeMinimum" type="int" value="2"/>
   <!--Dump the offset X and Y values calculated from the correlation bands (default = true)-->
-  <parameter name="DumpOffset" type="bool" value="false"/>
+  <parameter name="DumpOffset" type="bool"> true </parameter>
   <!--How many events are needed to get reasonable correlation plots (and Offset DB)? (default=1000)-->
-  <parameter name="Events" type="int" value="50000"/>
+  <parameter name="Events" type="int"> 1000000 </parameter>
   <!--Name of histogram info xml file-->
   <parameter name="HistogramInfoFilename" type="string"> @HistoInfoFile@ </parameter>
   <!--SensorID of fixed plane-->
   <parameter name="FixedPlane" type="int">1 </parameter>
-
   <!--parameter name="FixedPlane" type="int" value="0"/-->
   <!--This is the name of the hot pixel collection to be saved into the output slcio file-->
   <!--parameter name="HotPixelCollectionName" type="string" value="hotpixel"/-->
   <!--List of cluster collections-->
   <parameter name="InputClusterCollections" type="StringVec"> </parameter>
   <!--If there are more then this number of correlated hits (planes->track candidate) (default=5)-->
-  <parameter name="MinNumberOfCorrelatedHits" type="int" value="5"/>
+  <parameter name="MinNumberOfCorrelatedHits" type="int"> 4 </parameter>
   <!--This is the name of the LCIO file name with the output offset db (add .slcio)-->
   <!--parameter name="OffsetDBFile" type="string" value="offset-db.slcio"/-->
   <!--reference hit collection name -->
   <parameter name="ReferenceCollection" type="string" value="refhit"/>
   <!--Maximal values of the hit residuals in the X direction for a correlation band. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-->
-  <parameter name="ResidualsXMax" type="FloatVec"> 2. 2. 2. 2. 2. 2. </parameter>
+  <parameter name="ResidualsXMax" type="FloatVec"> @PreAlignResidualsXMax@ </parameter>
   <!--Minimal values of the hit residuals in the X direction for a correlation band. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-->
-  <parameter name="ResidualsXMin" type="FloatVec"> -2. -2. -2. -2. -2. -2. </parameter>
+  <parameter name="ResidualsXMin" type="FloatVec"> @PreAlignResidualsXMin@ </parameter>
   <!--Maximal values of the hit residuals in the Y direction for a correlation band. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-->
-  <parameter name="ResidualsYMax" type="FloatVec"> 2. 2. 2. 2. 2. 2. </parameter>
+  <parameter name="ResidualsYMax" type="FloatVec"> @PreAlignResidualsYMax@ </parameter>
   <!--Minimal values of the hit residuals in the Y direction for a correlation band. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-->
-  <parameter name="ResidualsYMin" type="FloatVec"> -2. -2. -2. -2. -2. -2. </parameter>
+  <parameter name="ResidualsYMin" type="FloatVec"> @PreAlignResidualsYMin@ </parameter>
+  <!-- <parameter name="ResidualsXMax" type="FloatVec"> @CorrResidualsXMax@ </parameter> -->
+  <!-- <\!--Minimal values of the hit residuals in the X direction for a correlation band. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-\-> -->
+  <!-- <parameter name="ResidualsXMin" type="FloatVec"> @CorrResidualsXMin@ </parameter> -->
+  <!-- <\!--Maximal values of the hit residuals in the Y direction for a correlation band. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-\-> -->
+  <!-- <parameter name="ResidualsYMax" type="FloatVec"> @CorrResidualsYMax@ </parameter> -->
+  <!-- <\!--Minimal values of the hit residuals in the Y direction for a correlation band. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-\-> -->
+  <!-- <parameter name="ResidualsYMin" type="FloatVec"> @CorrResidualsYMin@ </parameter> -->
+  <!-- <parameter name="ResidualsXMax" type="FloatVec"> 2. 2. 2. 2. 2. 2. </parameter> -->
+  <!-- <\!--Minimal values of the hit residuals in the X direction for a correlation band. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-\-> -->
+  <!-- <parameter name="ResidualsXMin" type="FloatVec"> -2. -2. -2. -2. -2. -2. </parameter> -->
+  <!-- <\!--Maximal values of the hit residuals in the Y direction for a correlation band. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-\-> -->
+  <!-- <parameter name="ResidualsYMax" type="FloatVec"> 2. 2. 2. 2. 2. 2. </parameter> -->
+  <!-- <\!--Minimal values of the hit residuals in the Y direction for a correlation band. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-\-> -->
+  <!-- <parameter name="ResidualsYMin" type="FloatVec"> -2. -2. -2. -2. -2. -2. </parameter> -->
   <!--Do you want the reference hit collection to be used for coordinate transformations?-->
   <!--parameter name="UseReferenceCollection" type="bool" value="true"/-->
   <!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
