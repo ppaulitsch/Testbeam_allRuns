@@ -137,7 +137,7 @@
   <!--List of cluster collections-->
   <parameter name="InputClusterCollections" type="StringVec"> </parameter>
   <!--If there are more then this number of correlated hits (planes->track candidate) (default=5)-->
-  <parameter name="MinNumberOfCorrelatedHits" type="int"> 4 </parameter>
+  <parameter name="MinNumberOfCorrelatedHits" type="int"> 6 </parameter>
   <!--This is the name of the LCIO file name with the output offset db (add .slcio)-->
   <!--parameter name="OffsetDBFile" type="string" value="offset-db.slcio"/-->
   <!--reference hit collection name -->
